@@ -1,0 +1,53 @@
+---
+# Install python 3.4
+
+- name: install development tools
+  yum: >
+    name="@Development tools"
+    state=present
+  tags:
+    - python34
+
+- name: Compilation dependencies
+  yum: >
+    name={{ item }}
+    state=present
+  with_items:
+    - openssl-devel
+    - sqlite-devel
+    - bzip2
+    - bzip2-devel
+    - postgresql
+    - python-psycopg2-doc
+    - python-psycopg2
+    - postgresql-devel
+  tags: 
+    - python34
+
+- name: make python directory
+  command: mkdir -p /root/python-3.4
+  tags:
+    - python34
+
+- name: copy Python 3.4 source
+  copy: >
+    src=python-3.4.0.tgz
+    dest=/root/python-3.4/python-3.4.0.tgz 
+    owner=root 
+    group=root
+  tags: 
+    - python34
+
+- name: copy Python 3.4 installer
+  copy: >
+    src=py3.4-build.sh 
+    dest=/root/python-3.4/py3.4-build.sh 
+    owner=root 
+    group=root
+  tags:
+    - python34
+
+- name: run python 3.4 installer
+  command: bash /root/python-3.4/py3.4-build.sh
+  tags:
+    - python34
